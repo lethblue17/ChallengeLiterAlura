@@ -1,12 +1,17 @@
 package com.ChallengeLiterAlura;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ChallengeLiterAluraApplication implements CommandLineRunner {
+	@Autowired
+	private AuthorRepository authorRepository;
+	@Autowired
+	private BookRepository bookRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChallengeLiterAluraApplication.class, args);
@@ -14,12 +19,8 @@ public class ChallengeLiterAluraApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		GutendexApiClient api = new GutendexApiClient();
-		String text = "";
-		var res = api.fetchBooks("");
-		var objectMapper = new ObjectMapper();
-		BookSearchResponse response = objectMapper.readValue(res, BookSearchResponse.class);
-		System.out.println(response.getCount());
+		MenuPrincipal menu = new MenuPrincipal(authorRepository, bookRepository);
+		menu.main();
 
 	}
 }
